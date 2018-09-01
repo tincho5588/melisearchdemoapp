@@ -24,7 +24,6 @@ import com.mercadolibre.searchaplication.datamodel.MeliSearchResult;
 public class MainActivity extends AppCompatActivity {
 
     private ProductsListAdapter mAdapter;
-    private ProgressDialog mLoadingDialog;
 
     /**
      * Search command for the Meli API. Use this constant along with {@link String#format(String, Object...)}
@@ -46,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
      * @see Meli#asyncGet(String, ApiRequestListener)
      */
     private final ApiRequestListener mSearchResultListener = new ApiRequestListener() {
+        private ProgressDialog mLoadingDialog;
+
         @Override
         public void onRequestProcessed(int requestCode, ApiResponse payload) {
             String responseText = payload.getContent();
@@ -59,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onRequestStarted(int requestCode) {
-
+            mLoadingDialog = ProgressDialog.show(MainActivity.this, "",
+                    "Cargando. Por favor aguarde...", true);
+            mAdapter.emptyAdapter();
         }
     };
 
@@ -70,10 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private final SearchView.OnQueryTextListener mSearchViewListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String s) {
-            mLoadingDialog = ProgressDialog.show(MainActivity.this, "",
-                    "Cargando. Por favor aguarde...", true);
             String searchCommand = String.format(SEARCH_COMMAND, s);
-            mAdapter.emptyAdapter();
+
             Meli.asyncGet(searchCommand, mSearchResultListener);
             return false;
         }
