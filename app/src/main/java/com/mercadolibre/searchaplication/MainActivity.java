@@ -98,14 +98,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    MenuItem.OnMenuItemClickListener mSearchButtonClickListener = new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            Log.d ("tag", "clicked!");
-            return true;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
