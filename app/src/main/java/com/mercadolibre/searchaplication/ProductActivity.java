@@ -1,5 +1,6 @@
 package com.mercadolibre.searchaplication;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private MeliFullProduct mFullProduct;
     private MeliProductDescription mMeliProductDescription;
+    private ProgressDialog mLoadingDialog;
 
     /**
      * Command to get the description of an item using the Meli API. Use this constant along with
@@ -64,11 +66,11 @@ public class ProductActivity extends AppCompatActivity {
                 mMeliProductDescription = description[0];
             }
             updateUI();
+            mLoadingDialog.dismiss();
         }
 
         @Override
         public void onRequestStarted(int requestCode) {
-
         }
     };
 
@@ -91,7 +93,8 @@ public class ProductActivity extends AppCompatActivity {
 
         @Override
         public void onRequestStarted(int requestCode) {
-
+            mLoadingDialog = ProgressDialog.show(ProductActivity.this, "",
+                    "Cargando. Por favor aguarde...", true);
         }
     };
 
