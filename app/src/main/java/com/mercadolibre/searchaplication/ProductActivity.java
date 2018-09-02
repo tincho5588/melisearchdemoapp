@@ -3,7 +3,12 @@ package com.mercadolibre.searchaplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mercadolibre.android.sdk.ApiRequestListener;
@@ -11,6 +16,7 @@ import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Meli;
 import com.mercadolibre.searchaplication.datamodel.MeliFullProduct;
 import com.mercadolibre.searchaplication.datamodel.MeliProductDescription;
+import com.mercadolibre.searchaplication.view.ProductView;
 
 public class ProductActivity extends AppCompatActivity {
     public static String PRODUCT_ID_EXTRA = "product_id_extra";
@@ -53,7 +59,11 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onRequestProcessed(int requestCode, ApiResponse payload) {
             String responseText = payload.getContent();
-            mMeliProductDescription = new Gson().fromJson(responseText, MeliProductDescription.class);
+            MeliProductDescription[] description = new Gson().fromJson(responseText, MeliProductDescription[].class);
+            if (description.length > 0) {
+                mMeliProductDescription = description[0];
+            }
+            updateUI();
         }
 
         @Override
@@ -76,12 +86,20 @@ public class ProductActivity extends AppCompatActivity {
         public void onRequestProcessed(int requestCode, ApiResponse payload) {
             String responseText = payload.getContent();
             mFullProduct = new Gson().fromJson(responseText, MeliFullProduct.class);
-            Meli.asyncGet(String.format(DESCRIPTION_COMMAND, mFullProduct.getDescriptions()[0].getId()), mDescriptionResultListener);
+            Meli.asyncGet(String.format(DESCRIPTION_COMMAND, mFullProduct.getItem_id()), mDescriptionResultListener);
         }
 
         @Override
         public void onRequestStarted(int requestCode) {
 
+        }
+    };
+
+    private final View.OnClickListener mBuyButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Toast toast = Toast.makeText(ProductActivity.this, "Funcion No Disponible", Toast.LENGTH_SHORT);
+            toast.show();
         }
     };
 
@@ -109,6 +127,17 @@ public class ProductActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
 
+    public void updateUI() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProductView productView = new ProductView(getApplicationContext(), mFullProduct, mMeliProductDescription);
+                ScrollView container = findViewById(R.id.productContainer);
+                container.addView(productView);
+                productView.setBuyButtonOnClickListener(mBuyButtonClickListener);
+            }
+        });
     }
 }

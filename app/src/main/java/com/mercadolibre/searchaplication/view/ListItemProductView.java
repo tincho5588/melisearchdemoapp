@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mercadolibre.searchaplication.R;
+import com.mercadolibre.searchaplication.common.DownloadImageTask;
 import com.mercadolibre.searchaplication.datamodel.MeliProductBrief;
 
 import java.io.InputStream;
@@ -25,7 +26,7 @@ public class ListItemProductView extends RelativeLayout {
 
     private void initViews(Context context, MeliProductBrief product) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.product_view,
+        inflater.inflate(R.layout.product_list_view_item,
                 this, true);
 
         ImageView productThumbnail = findViewById(R.id.productThumbnail);
@@ -35,35 +36,8 @@ public class ListItemProductView extends RelativeLayout {
 
         new DownloadImageTask(productThumbnail).execute(product.getThumbnail());
         productTitle.setText(product.getTitle());
-        productTitle.setTextSize(20);
         productQuantity.setText("Cantidad Disponible: " + product.getAvailable_quantity());
-        productQuantity.setTextSize(15);
         productPrice.setText("$" + product.getPrice());
-        productPrice.setTextSize(15);
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 }

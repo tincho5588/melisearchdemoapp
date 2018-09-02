@@ -12,17 +12,11 @@ public class MeliProductBrief {
     @SerializedName("price")
     private double price;
 
-    @SerializedName("permalink")
-    private String permalink;
-
     @SerializedName("thumbnail")
     private String thumbnail;
 
     @SerializedName("available_quantity")
     private int available_quantity;
-
-    @SerializedName("error")
-    private String error;
 
     public String getItem_id() {
         return item_id;
@@ -36,10 +30,6 @@ public class MeliProductBrief {
         return price;
     }
 
-    public String getPermalink() {
-        return permalink;
-    }
-
     public void setItem_id(String item_id) {
         this.item_id = item_id;
     }
@@ -50,10 +40,6 @@ public class MeliProductBrief {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public void setPermalink(String permalink) {
-        this.permalink = permalink;
     }
 
     public String getThumbnail() {
@@ -70,13 +56,5 @@ public class MeliProductBrief {
 
     public void setAvailable_quantity(int available_quantity) {
         this.available_quantity = available_quantity;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 }
