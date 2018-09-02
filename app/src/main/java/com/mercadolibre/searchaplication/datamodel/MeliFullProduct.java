@@ -2,8 +2,6 @@ package com.mercadolibre.searchaplication.datamodel;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
-
 public class MeliFullProduct extends MeliProductBrief {
     @SerializedName("pictures")
     private MeliProductPictures[] pictures;

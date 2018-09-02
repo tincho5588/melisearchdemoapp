@@ -53,7 +53,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@android:color/holo_blue_dark"
-        android:text="Comprar" />
+        android:text="@string/buy" />
 
     <TextView
         android:id="@+id/descriptionTitle"
@@ -63,7 +63,7 @@
         android:layout_below="@+id/buyButton"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
-        android:text="Descripcion: "
+        android:text="@string/description_title"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold" />

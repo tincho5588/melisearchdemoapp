@@ -37,15 +37,10 @@ public class ProductsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         MeliProductBrief product = mProductsList.get(position);
-        ListItemProductView productView = new ListItemProductView(mContext, product);
-        return productView;
+        return new ListItemProductView(mContext, product);
     }
 
     public void addItem(MeliProductBrief product) {
         mProductsList.add(product);
-    }
-
-    public void emptyAdapter() {
-        mProductsList.removeAll(mProductsList);
     }
 }

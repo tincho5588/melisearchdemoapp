@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="available_quantity">Cantidad Disponible:</string>
+    <string name="currency_symbol">$</string>
+    <string name="loading_dialog">Cargando. Por favor aguarde...</string>
+    <string name="function_not_available">Funcion no disponible</string>
+    <string name="buy">Comprar</string>
+    <string name="search">Buscar</string>
+    <string name="description_title">Descripcion:</string>
+</resources>

@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -20,7 +18,7 @@ import com.mercadolibre.searchaplication.datamodel.MeliProductDescription;
 import com.mercadolibre.searchaplication.view.ProductView;
 
 public class ProductActivity extends AppCompatActivity {
-    public static String PRODUCT_ID_EXTRA = "product_id_extra";
+    public static final String PRODUCT_ID_EXTRA = "product_id_extra";
 
     private MeliFullProduct mFullProduct;
     private MeliProductDescription mMeliProductDescription;
@@ -78,9 +76,9 @@ public class ProductActivity extends AppCompatActivity {
      * Listener to receive and process the API response for a search. Methods in here will get
      * called whenever we make an async GET request to the Meli API passing this object as argument.
      * This particular instance of the listener is meant to be used along with the
-     * {@link #DESCRIPTION_COMMAND} constant.
+     * {@link #ITEM_COMMAND} constant.
      *
-     * @see #DESCRIPTION_COMMAND
+     * @see #ITEM_COMMAND
      * @see Meli#asyncGet(String, ApiRequestListener)
      */
     private final ApiRequestListener mItemResultListener = new ApiRequestListener() {
@@ -94,14 +92,14 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         public void onRequestStarted(int requestCode) {
             mLoadingDialog = ProgressDialog.show(ProductActivity.this, "",
-                    "Cargando. Por favor aguarde...", true);
+                    getString(R.string.loading_dialog), true);
         }
     };
 
     private final View.OnClickListener mBuyButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast toast = Toast.makeText(ProductActivity.this, "Funcion No Disponible", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(ProductActivity.this, getString(R.string.function_not_available), Toast.LENGTH_SHORT);
             toast.show();
         }
     };
@@ -132,7 +130,7 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
-    public void updateUI() {
+    private void updateUI() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

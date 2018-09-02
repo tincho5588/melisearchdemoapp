@@ -18,7 +18,7 @@ import com.mercadolibre.searchaplication.datamodel.MeliProductBrief;
 import com.mercadolibre.searchaplication.datamodel.MeliSearchResult;
 
 public class SearchResultsActivity extends AppCompatActivity {
-    public static String SEARCH_TEXT_EXTRA = "search_text_extra";
+    public static final String SEARCH_TEXT_EXTRA = "search_text_extra";
 
     private ProductsListAdapter mAdapter;
 
@@ -58,7 +58,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         @Override
         public void onRequestStarted(int requestCode) {
             mLoadingDialog = ProgressDialog.show(SearchResultsActivity.this, "",
-                    "Cargando. Por favor aguarde...", true);
+                    getString(R.string.loading_dialog), true);
         }
     };
 
