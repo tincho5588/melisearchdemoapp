@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="50pt">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55pt"
+    android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/productThumbnail"
-        android:layout_width="40pt"
-        android:layout_height="40pt"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:visibility="visible"/>
+    <android.support.v7.widget.CardView
+        android:id="@+id/productCardView"
+        android:layout_width="match_parent"
+        android:layout_height="50pt" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignTop="@+id/productThumbnail"
-        android:layout_toEndOf="@+id/productThumbnail"
-        android:weightSum="1"
-        android:orientation="vertical">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/productTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="0.50"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:visibility="visible" />
+            <ImageView
+                android:id="@+id/productCardViewThumbnail"
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/productQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="0.25"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:visibility="visible" />
+                <TextView
+                    android:id="@+id/productCardViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20pt"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignTop="@+id/productCardViewThumbnail"
+                    android:layout_toEndOf="@+id/productCardViewThumbnail"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/productPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="0.25"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:visibility="visible" />
-    </LinearLayout>
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/productCardViewQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10pt"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/productCardViewThumbnail"
+                    android:layout_below="@+id/productCardViewTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/productCardViewPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10pt"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/productCardViewThumbnail"
+                    android:layout_below="@+id/productCardViewQuantity"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:visibility="visible" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

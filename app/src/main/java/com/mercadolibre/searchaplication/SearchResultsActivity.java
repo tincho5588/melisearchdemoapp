@@ -4,10 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.mercadolibre.android.sdk.ApiRequestListener;
@@ -66,11 +66,11 @@ public class SearchResultsActivity extends AppCompatActivity {
      * Listener for the ListView on this activity. Methods on this listener will be called when the
      * user clicks an item of the list.
      */
-    private final AdapterView.OnItemClickListener mListViewClickListener = new AdapterView.OnItemClickListener() {
+    private final ProductsListAdapter.ItemClickListener mItemClickListener = new ProductsListAdapter.ItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        public void onItemClick(View v, int position) {
             Intent intent = new Intent(SearchResultsActivity.this, ProductActivity.class);
-            intent.putExtra(ProductActivity.PRODUCT_ID_EXTRA, mAdapter.getItem(i).getItem_id());
+            intent.putExtra(ProductActivity.PRODUCT_ID_EXTRA, mAdapter.getItem(position).getItem_id());
             startActivity(intent);
         }
     };
@@ -80,10 +80,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        mAdapter = new ProductsListAdapter(getApplicationContext());
-        ListView listView = findViewById(R.id.resultsListView);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(mListViewClickListener);
+        RecyclerView itemsContainer = findViewById(R.id.itemsContainer);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mAdapter = new ProductsListAdapter(this, mItemClickListener);
+
+        itemsContainer.setLayoutManager(layoutManager);
+        itemsContainer.setAdapter(mAdapter);
 
         // Set the back button on the action bar
         getSupportActionBar().setHomeButtonEnabled(true);

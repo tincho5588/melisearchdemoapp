@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.mercadolibre.searchaplication.MainActivity">
 
-    <ListView
-        android:id="@+id/resultsListView"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent"
+        android:id="@+id/itemsContainer" />
 </android.support.constraint.ConstraintLayout>
