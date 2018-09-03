@@ -2,6 +2,7 @@ package com.mercadolibre.searchaplication;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -22,7 +23,6 @@ public class ProductActivity extends AppCompatActivity {
 
     private MeliFullProduct mFullProduct;
     private MeliProductDescription mMeliProductDescription;
-    private ProgressDialog mLoadingDialog;
 
     /**
      * Command to get the description of an item using the Meli API. Use this constant along with
@@ -46,56 +46,6 @@ public class ProductActivity extends AppCompatActivity {
      */
     private final String ITEM_COMMAND = "/items/%s";
 
-    /**
-     * Listener to receive and process the API response for a search. Methods in here will get
-     * called whenever we make an async GET request to the Meli API passing this object as argument.
-     * This particular instance of the listener is meant to be used along with the
-     * {@link #DESCRIPTION_COMMAND} constant.
-     *
-     * @see #DESCRIPTION_COMMAND
-     * @see Meli#asyncGet(String, ApiRequestListener)
-     */
-    private final ApiRequestListener mDescriptionResultListener = new ApiRequestListener() {
-        @Override
-        public void onRequestProcessed(int requestCode, ApiResponse payload) {
-            String responseText = payload.getContent();
-            MeliProductDescription[] description = new Gson().fromJson(responseText, MeliProductDescription[].class);
-            if (description.length > 0) {
-                mMeliProductDescription = description[0];
-            }
-            updateUI();
-            mLoadingDialog.dismiss();
-        }
-
-        @Override
-        public void onRequestStarted(int requestCode) {
-        }
-    };
-
-    /**
-     * Listener to receive and process the API response for a search. Methods in here will get
-     * called whenever we make an async GET request to the Meli API passing this object as argument.
-     * This particular instance of the listener is meant to be used along with the
-     * {@link #ITEM_COMMAND} constant.
-     *
-     * @see #ITEM_COMMAND
-     * @see Meli#asyncGet(String, ApiRequestListener)
-     */
-    private final ApiRequestListener mItemResultListener = new ApiRequestListener() {
-        @Override
-        public void onRequestProcessed(int requestCode, ApiResponse payload) {
-            String responseText = payload.getContent();
-            mFullProduct = new Gson().fromJson(responseText, MeliFullProduct.class);
-            Meli.asyncGet(String.format(DESCRIPTION_COMMAND, mFullProduct.getItem_id()), mDescriptionResultListener);
-        }
-
-        @Override
-        public void onRequestStarted(int requestCode) {
-            mLoadingDialog = ProgressDialog.show(ProductActivity.this, "",
-                    getString(R.string.loading_dialog), true);
-        }
-    };
-
     private final View.OnClickListener mBuyButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -111,7 +61,7 @@ public class ProductActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String productIdExtra = i.getStringExtra(PRODUCT_ID_EXTRA);
-        Meli.asyncGet(String.format(ITEM_COMMAND, productIdExtra), mItemResultListener);
+        new GetProductTask().execute(productIdExtra);
 
         // Set the back button on the action bar
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -140,5 +90,35 @@ public class ProductActivity extends AppCompatActivity {
                 productView.setBuyButtonOnClickListener(mBuyButtonClickListener);
             }
         });
+    }
+
+    public class GetProductTask extends AsyncTask<String, Void, Boolean> {
+        private ApiResponse mProductResponse;
+        private ApiResponse mDescriptionResponse;
+        private ProgressDialog mLoadingDialog;
+
+        @Override
+        protected void onPreExecute() {
+            mLoadingDialog = ProgressDialog.show(ProductActivity.this, "",
+                    getString(R.string.loading_dialog), true);
+        }
+
+        protected Boolean doInBackground(String... productId) {
+            mProductResponse = Meli.get(String.format(ITEM_COMMAND, productId));
+            mDescriptionResponse = Meli.get(String.format(DESCRIPTION_COMMAND, productId));
+            return true;
+        }
+
+        protected void onPostExecute(Boolean arg) {
+            String productResponseText = mProductResponse.getContent();
+            String descriptionResponseText = mDescriptionResponse.getContent();
+            mFullProduct = new Gson().fromJson(productResponseText, MeliFullProduct.class);
+            MeliProductDescription[] description = new Gson().fromJson(descriptionResponseText, MeliProductDescription[].class);
+            if (description.length > 0) {
+                mMeliProductDescription = description[0];
+            }
+            updateUI();
+            mLoadingDialog.dismiss();
+        }
     }
 }
